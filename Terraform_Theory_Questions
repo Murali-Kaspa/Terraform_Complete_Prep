@@ -1,0 +1,75 @@
+
+1. What is Terraform, And why it is used ?
+
+Terraform is an open-source software and it is used an infrasctructure as a code (IaC) tool, We can write logic to create resources in cloud. we can easily maintain,version,reuse and share the codes.
+     
+Terraform uses the HashiCorp Configuration Language (HCL), which is human-readable and declarative, making it easy to understand and use.
+
+Terraform is widely used because it is in open source and it supports multiple clouds platforms to create resources.
+
+For Ex: In AWS we can create resources in AWS by using Cloud Formation by writing YAML/JSON format. But it is bound to AWS services only. So in your org if a different cloud project came into your hands, u don't need to learn other cloud platform, instead u can use this terraform as it supports multi cloud platforms.
+
+
+2. Advantages of Terraform ? 
+
+1. Terraform is free and open source
+2. It reduced the time to provision the infrastructure on cloud.
+3. It uses simple commands and code which are easy to use and understand
+4. It supports multiple providers (AWS,GCP,Azure)
+5. Creates infrastructure safely and more efficiently with minimal time.
+
+3. What are the main components of a Terraform configuration file?
+
+In terraform we have component files to write code in multiple files to keep the code clean and reduce the impact of overall code, In terraform we keep component files with name as *.tf files.
+
+We have 4 files
+providers.tf, main.tf, variables.tf, output.tf
+
+main.tf:
+    * This is the central file where the core infrastructure logic is defined.
+    * It integrates other .tf files and acts as the "brain" of the Terraform configuration.
+variables.tf:
+    * This file is used to declare variables, making the code dynamic and reusable.
+    * These variables can be referenced in the main.tf file to avoid hardcoding values.
+providers.tf:
+    * This file specifies which cloud provider(s) or service(s) Terraform will interact with (e.g., AWS, Azure, GCP).
+    * It informs Terraform about the plugins it needs to download and use.
+outputs.tf:
+    * This file is used to define output values, which display key information about the resources created by Terraform (e.g., instance IDs, IP addresses).
+    * These outputs are helpful for debugging or passing data to other modules or tools.
+
+	File Structure:
+
+	├── main.tf        # Main logic for the infrastructure
+	├── variables.tf   # Variable declarations
+	├── providers.tf   # Provider configuration
+	├── outputs.tf     # Outputs for created resources
+
+4. What is State file ? 
+In terraform state-file keeps the track of records which was created by terraform. 
+If a resource is accidentally deleted or modified outside of Terraform, you can run terraform apply again, Terraform will compare the current state (as recorded in the state file) to the desired state defined in the configuration files, and it will recreate the resource if it finds discrepancies. 
+
+It’s important to keep the state file safe and secure, especially when collaborating in teams, and consider using remote backends (like S3 with DynamoDB for locking) for storing the state file in shared environments.
+
+Terraform destroy command also used this state file to remove everything defined in your configuration, based on the state file, by destroying the resources. It stores locally in terraform.tfstate file and this file was created whenever u run terraform apply command.
+
+5. What Happens if you made changes to the resource from console ?
+
+If you create an EC2 instance using Terraform and then make changes to that instance manually (via the UI or other means), running terraform apply will compare the current state (from the state file) with the desired state (defined in your Terraform configuration).
+
+* Minor changes (like modifying tags or attributes that Terraform can update) will update the instance without replacing it.
+* Major changes (like modifying attributes that require recreation) will result in the old instance being terminated and a new one being created.
+
+6. Different types of states in Terraform ?
+
+Local State: Stored locally, simple but not ideal for collaboration.
+Remote State: Stored in external systems like AWS S3, GCS, Azure, or Terraform Cloud. Best for teams, collaboration, and large-scale infrastructure.
+Workspace State: Isolated states within the same configuration, ideal for managing multiple environments.
+Desired State : It Represents how the information to be present.
+
+7. what is terraform.tfstatebackup file ? 
+
+Terraform.tfstate.backup file is a backup of most recent version of our statefile (terraform.tfstate), and it also created automatically when u run terraform apply command.
+It serves as a safety copy in case something goes wrong, allowing you to restore the state to its previous version.
+
+
