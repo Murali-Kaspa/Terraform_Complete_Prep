@@ -85,4 +85,9 @@ it will create instance with instance_type as t2.large.
 Buut when u give t2.micro in main.tf file it is hardcoded, so even u have instance type in var.tf and .tfvars file it will create instance with t2
 .micro only.
 
+9. What is Outputs in Terraform ? 
+
+Outputs also a component in Terraform and it is used to display information after the resources are created, Such as IP Addresses , Resource Id’s.
+You can give file name as whatever u want (my_outputs.tf , display.tf).
+
 
