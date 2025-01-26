@@ -1,0 +1,29 @@
+terraform init : Initializes a new or existing Terraform working directory by downloading the necessary provider plugins and setting up the backend.
+
+terraform plan : Creates an execution plan, showing what actions Terraform will take to apply your configuration (without making any changes).
+
+terraform apply : Applies the changes required to reach the desired state of the configuration as outlined in the execution plan.
+
+terraform destroy : Destroys all the resources created by Terraform and removes them from the state file.
+
+terraform validate : Validates the syntax of the Terraform configuration files to ensure they are correct and free of errors.
+
+terraform fmt : Automatically formats the Terraform configuration files to conform to the standard style.
+
+terraform show : Displays the current state or a specific resource's details, providing a human-readable format of the state file.
+
+terraform output : Extracts and displays output values from your Terraform configuration after applying it.
+
+terraform state : Manages the Terraform state file, used for advanced operations like moving resources or modifying the state directly.
+
+terraform import : Imports existing infrastructure resources into Terraform management by adding them to the state file.
+
+terraform taint : Manually marks a resource as "tainted," forcing it to be recreated during the next apply.
+
+terraform untaint : Removes the taint mark from a resource, preventing it from being recreated in the next apply.
+
+terraform providers : Lists all the providers used in the configuration, showing their version information.
+
+terraform graph : Outputs a visual representation of the Terraform configuration as a graph in DOT format.
+
+terraform refresh : Updates the state file with the most recent state of the infrastructure, re-syncing Terraform's state with the actualrequests.
