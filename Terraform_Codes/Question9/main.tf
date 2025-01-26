@@ -9,7 +9,8 @@ resource "aws_instance" "one" {
   }
 }
 
-#You create a new file to display if required else you can write here.
+#You create a new file to display the outputs if required, else you can write here.
+#NOTE : Terraform will not throw any error for this cases like defining output in main.tf and outputs.tf, you just need to change instance_public_ip to someother name.
 
 output "instance_public_ip" {
   description = "Show instance Public IP"
