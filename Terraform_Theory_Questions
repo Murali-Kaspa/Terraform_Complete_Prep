@@ -72,4 +72,17 @@ Desired State : It Represents how the information to be present.
 Terraform.tfstate.backup file is a backup of most recent version of our statefile (terraform.tfstate), and it also created automatically when u run terraform apply command.
 It serves as a safety copy in case something goes wrong, allowing you to restore the state to its previous version.
 
+8. what is the differnce between var.tf, terraform.tfvars and main.tf ?
+
+When you create above three files and run a instance it will take priority as .tfvars > var.tf > main.tf
+
+For example :
+
+When u give instance_type as t2.large in .tfvars file and t2.medium in var.tf and in main.tf u give instance_type as var.instance_type.
+
+it will create instance with instance_type as t2.large.
+
+Buut when u give t2.micro in main.tf file it is hardcoded, so even u have instance type in var.tf and .tfvars file it will create instance with t2
+.micro only.
+
 
