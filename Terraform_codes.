@@ -1,0 +1,32 @@
+QUESTION-8:
+
+main.tf 
+
+provider "aws" {
+  region = "ap-south-1"
+}
+
+resource "aws_instance" "one" {
+  instance_type = "t2.large" #u can give var.instance_type also to create a instance the specified var instance_type
+  ami           = var.ami
+  tags = { Name = "Instance_From_Terraform"
+  }
+}
+
+variables.tf
+
+variable "instance_type" {
+  description = "The type of instance to create"
+  default     = "t2.medium" # You can remove this line also
+  type        = string
+}
+
+variable "ami" {
+  description = "The type of instance to create"
+  type        = string
+}
+
+terraform.tfvars
+
+instance_type = "t2.micro"
+ami           = "ami-0b7207e48d1b6c06f"
