@@ -90,4 +90,20 @@ Buut when u give t2.micro in main.tf file it is hardcoded, so even u have instan
 Outputs also a component in Terraform and it is used to display information after the resources are created, Such as IP Addresses , Resource Id’s.
 You can give file name as whatever u want (my_outputs.tf , display.tf).
 
+10. What is Modules ?
+
+A module is nothing but a folder of terraform files, Here we can split the code into multiple files for better readability and re-used multiple Times.
+
+Modules are categorized into two types:
+
+Root Module : The Current directory of terraform files on which you are running commands.
+
+Child Module : The Modules are taken from the root module to create a child module and add resource to it. We can call this module to the main module by using module “name” {
+Source = "child path”
+}
+
+Modules name must be unique. Bcz it is used as a reference to the module and outputs.
+
+EX: In real time we can take the ref from root module and create a child module and make changes. So once changes done in child module, this module will be called by root module and run the commands in root file.
+
 
