@@ -102,6 +102,16 @@ Child Module : The Modules are taken from the root module to create a child modu
 Source = "child path”
 }
 
+project/
+├── main.tf          # Calls the module
+├── variables.tf     # Defines variables for the root module
+├── outputs.tf       # Outputs from the root module
+├── modules/
+│   └── ec2/
+│       ├── main.tf  # Defines resources for the EC2 instance
+│       ├── variables.tf  # Defines variables for the module
+│       └── outputs.tf    # Outputs for the EC2 module
+
 Modules name must be unique. Bcz it is used as a reference to the module and outputs.
 
 EX: In real time we can take the ref from root module and create a child module and make changes. So once changes done in child module, this module will be called by root module and run the commands in root file.
