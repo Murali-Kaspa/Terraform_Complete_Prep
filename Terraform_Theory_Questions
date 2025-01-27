@@ -2,7 +2,7 @@
 1. What is Terraform, And why it is used ?
 
 Terraform is an open-source software and it is used an infrasctructure as a code (IaC) tool, We can write logic to create resources in cloud. we can easily maintain,version,reuse and share the codes.
-     
+Terraform is a declarative language, It provides a morre accurate view of what is actually deployed when compared to the procedural language.
 Terraform uses the HashiCorp Configuration Language (HCL), which is human-readable and declarative, making it easy to understand and use.
 
 Terraform is widely used because it is in open source and it supports multiple clouds platforms to create resources.
@@ -115,5 +115,34 @@ project/
 Modules name must be unique. Bcz it is used as a reference to the module and outputs.
 
 EX: In real time we can take the ref from root module and create a child module and make changes. So once changes done in child module, this module will be called by root module and run the commands in root file.
+
+11. What is terraform loops and ternary operators ?
+
+A: As terraform is declarative language it don't have loops concept, so in terraform we can't repeat a peice of code, To overcome this we use meta-parameter called as COUNT.
+
+	resource "aws_instance" "example" {
+  	count         = 3  #It will create no of instances, based on the count number which we give. 
+ 	 ami           = "ami-0b7207e48d1b6c06f"
+  	instance_type = "t2.micro"
+	}
+   * The ternary operator is a shorthand for a simple if-else condition. It works like this: condition ? true_value : false_value
+	instance_type = var.environment == "production" ? "t2.large" : "t2.micro"
+
+12. What is Remote Backend? 
+
+A remote backend in terraform is to store the statefile securly on remote servers (oR) Services, 
+and it enables collaboration among team members and ensuring the security and durability of your stored data.
+
+13. What is State Locking ? 
+
+It is a mechanism in terraform to prevent multiple users making concurrent modifications in the same state file. Which leads to corruption or inconsistency in infrstrcutor management.
+It is particualry important while using remote backends as it ensure only one operation can modify the state file at any given time.
+
+For ex: If two developers worked on same configuration and perform actions like terraform apply OR Terraform plan. it locks the statefile.
+	* Developer A starts terraform apply, and the state file gets locked.
+        * Developer B tries to run terraform plan at the same time. Since the state file is locked, Terraform will either wait or show an error.
+        * After Developer A finishes, the lock is released, allowing Developer B to proceed.
+
+
 
 
