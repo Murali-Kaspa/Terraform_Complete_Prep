@@ -143,6 +143,51 @@ For ex: If two developers worked on same configuration and perform actions like 
         * Developer B tries to run terraform plan at the same time. Since the state file is locked, Terraform will either wait or show an error.
         * After Developer A finishes, the lock is released, allowing Developer B to proceed.
 
+14. What is Proviosioners and it's types ? 
+
+Provisioners in Terraform allow you to execute scripts or run commands on a local machine or a remote machine during the creation or destruction of a resource. 
+They are used for tasks like configuring infrastructure or deploying software that cannot be managed declaratively.
+
+	There are two types of Provisioners:
+	1. File Provisioner : Can be used to copies files or directories from local to remote machines.
+				provisioner "file" {
+				  source      = "script.sh"
+				  destination = "/tmp/script.sh"
+				}
+
+	2. Remote-Exec Provisioner : Used to run scripts or commands on a remote machine over SSH (Linux) or WinRM (Windows) connections.
+
+ 				    provisioner "remote-exec" {
+					  inline = [
+					    "sudo apt-get update -y",
+					    "sudo apt-get install nginx -y"
+					  ]
+					}
+15. What are Workspaces in Terraform ?
+
+Terraform workspaces allows to manage multiple instances of a single configuration, which can be useful for different environments.
+
+Ex: In terraform if we create a resource, a state file was created, So if we modify the changes and re-run the config file terraform will update the existing resources and create new resources because they share the same state file.
+
+To overcome this we use this Workspaces Concept, by using workspaces you can manage multiple environments from a single configuration keeping each environment's state separate and making it easy to deploy and manage resources in different environmnts.
+
+Terraform Workspace files can be crated in this path : /home/ec2-user/Practise/terraform.tfstate.d/Dev
+
+Terraform workspace new prod - Create workspace
+Terraform workspace select prod - Switch to prod workspace
+Terraform workspace list - To list all workspaces.
+Terraform workspace delete prod - Delete the pros Workspace.
+
+16. What is terraform import ?
+
+Terraform import can be used to import the aws infrastrcutre to terraform by using import command.
+
+ex : Terraform import aws_instance.imported_instance_name i-012343dbska
+
+
+
+
+
 
 
 
