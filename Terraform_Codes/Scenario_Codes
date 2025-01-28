@@ -1,0 +1,68 @@
+1. How to create multiple instances in terraform with Unique names?
+
+provider "aws" {
+  region = "ap-south-1"
+}
+
+resource "aws_instance" "instances" {
+  instance_type = "t2.micro"
+  ami           = "ami-0b7207e48d1b6c06f"  # Replace with a valid AMI ID
+  count         = 10 #This value defines no.of instances will be created.
+
+  tags = {
+    Name = "Instance-${count.index + 1}" #This will generate instances names as Instance-1, Instance-2 like that upto count value.
+  }
+}
+
+output "instance_public_ip" {
+  value = aws_instance.instances[*].public_ip
+}
+
+
+2. How to create multiple instances with different names and different sizes ? 
+
+provider "aws"{
+region = "ap-south-1"
+}
+
+resource "aws_instance" "one"{
+for_each = {
+Dev = {name = "First_instance" , instance_type = "t2.micro"}
+Prod = {name = "Production_Instance", instance_type = "t2.large"}
+Test = {name = "Testing_Instance", instance_type = "t2.medium"}
+}
+ami = "ami-0b7207e48d1b6c06f"
+instance_type = each.value.instance_type
+tags = {Name = each.value.name
+}
+}
+
+3. How to create Multiple Instances in Multiple Regions ? 
+
+provider "aws"{
+alias = "ap-south-1"
+region = "ap-south-1"
+}
+
+provider "aws"{
+alias = "ap-west-1"
+region = "ap-west-1"
+}
+
+
+resource "aws_instance" "first_AZ"{
+instance_type = "t2.micro"
+provider = aws.ap-south-1
+ami = "ami-0b7207e48d1b6c06f"
+tags = {Name = "Region_1_Instance"
+}
+}
+
+
+resource "aws_instance" "second_AZ"{
+instance_type = "t2.micro"
+provider = aws.ap-west-1
+ami = "ami-0b7207e48d1b6c06f"
+tags = {Name = "Region_2_Instance"
+}
+}
