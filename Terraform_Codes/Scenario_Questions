@@ -1,0 +1,105 @@
+1. Terraform Instance Creation from EC2-Instance.
+
+	When you want to create an instance from an ec2-instancce with the Keypair. We need to follow below steps.
+
+	First we need to copy the key pair from our local system to our instance by using below command.
+
+	Step-1:
+
+	Connect your instance through terminal.
+
+	Step-2:
+
+	We run this command from our terminal without connecting it to instance.
+
+	scp -i /Users/muralikrishnakaspa/Desktop/AWS-Files/KeyFiles/Macbook_Keypair.pem /Users/muralikrishnakaspa/Desktop/AWS-Files/KeyFiles/Macbook_Keypair.pem ec2-user@43.204.234.152:/home/ec2-user/PROJECT/
+
+	Step-3:
+
+	Once the Key Pair was Copied, install terraform in your instance.
+
+	sudo yum install -y yum-utils shadow-utils
+	sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+	sudo yum -y install terraform
+
+	Step-4:
+
+	Create a main.tf file and write your logic here. To create an instance with KeyPair.
+
+	Step-5:
+
+	We have Private Key in your Local System, But we need to generate Public Key based on this Private Key. The below command will generate a Public key.
+
+	ssh-keygen -y -f /path/to/Macbook_Keypair.pem > Macbook_Keypair.pub
+
+	Step-6:
+
+	Now run terraform plan and terraform apply.
+
+
+		Main.tf: 
+
+		provider "aws" {
+		  region = "ap-south-1"
+		}
+
+		resource "aws_instance" "one" {
+  		ami           = "ami-0fd05997b4dff7aac"
+  		instance_type = "t2.micro"
+  		key_name      = aws_key_pair.my_key.key_name
+  		tags = { Name = "MYPRACTISE"
+ 		 }
+		}
+
+		resource "aws_key_pair" "my_key" {
+  		key_name   = "Macbook_Keypair.pem"
+  		public_key = file("/home/ec2-user/TERRAFORM/Macbook_Keypairr.pub")
+		}		
+=====================================================================================
+
+2. I Accidentally Deleted my StateFile, How can I retrieve it ?
+
+
+If you remove state file terraform will not even destroy the resources which was created by apply command.
+
+We can import the state file by using IMPORT Command.
+
+terraform import aws_instance.MYPRACTISE2 i-0d1abe6e6923a236d
+
+MYPRACTISE => It is the Name of the Instance.
+
+In your main.tf you have to changes instance resource as “aws_instance” “MYPRACTISE2”.
+
+Now you run terraform apply command and verify the state file.               
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
