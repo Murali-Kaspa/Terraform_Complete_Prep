@@ -1,0 +1,34 @@
+########  New Process ######.
+
+In the other files we could see, we need to create S3 bucket to store the state file and Dynamo Db to lock the code, 
+So with the latest terraform release we don't require Dynamo DB to lock the state. We can do it in S3 itself.
+
+main.tf 
+
+provider "aws"{
+region = "ap-south-1"
+}
+
+resource "aws_instance" "one"{
+count = 2
+  instance_type = "t2.micro"
+ami = "ami-05fa46471b02db0ce"
+tags = {Name = "INSTANCRFROMTF"
+}
+}
+
+resource "aws_s3_bucket" "bucket"{
+bucket = "uuunqbuckta"
+}
+
+backend.tf
+
+terraform{
+backend "s3"{
+bucket = "uuunqbuckta"
+key = "murali/terraform.tfstate"
+region = "ap-south-1"
+encrypt = true
+use_lockfile = true
+}
+}
