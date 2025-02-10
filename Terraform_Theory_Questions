@@ -185,6 +185,54 @@ Terraform import can be used to import the aws infrastrcutre to terraform by usi
 ex : Terraform import aws_instance.imported_instance_name i-012343dbska
 
 
+Terraform 
+
+
+17. A Terraform apply fails due to a state file lock issue. How would you resolve it?
+
+		This issue usually happens when another process is holding a lock on the state file. Here’s how I would troubleshoot and resolve it
+
+		First we need to check which process or user is holding the lock. : terraform force-unlock -dry-run <LOCK_ID>
+
+		Once we got the Lock id, We can unlock it by using : terraform force-unlock <LOCK_ID>.
+
+
+18. Your Terraform deployment created resources in AWS, but some are not being deleted when destroying the infrastructure. What went wrong?
+
+		Some resources may have lifecycle rules preventing deletion, like : 
+
+		resource "aws_s3_bucket" "example" {
+	  	bucket = "my-bucket"
+
+  		lifecycle {
+    		prevent_destroy = true
+  		}
+		}	
+
+19. The Terraform execution is slow due to too many dependent modules. How can you optimize it?
+
+		If your terraform execution is very slow, we can use parallelism to optimise the speed. By default this parallelism is set to 10, We can increase this by  using below command.
+		terraform apply -parallelism=20
+		If you want to test for Particular Module we can avoid apply the entire infrastructure and use target : terraform apply -target=module.ec2
+
+20. Your Terraform deployment in a multi-cloud environment is facing latency issues. How would you optimize it?
+		If your Terraform deployment in a multi-cloud environment is facing latency issues, you can optimize it by focusing on parallel execution, provider configurations, and network efficiency.
+		Define separate provider configurations for each cloud (AWS, Azure, GCP) to avoid unnecessary dependencies.
+	
+		provider "aws" {
+  		alias  = "aws_us"
+ 		region = "us-east-1"
+		}
+
+		provider "google" {
+  		alias   = "gcp_eu"
+  		region  = "europe-west1"
+  		project = "my-gcp-project"
+		}
+		By increasing parallelism, reducing cross-cloud dependencies, optimizing provider configurations, and using efficient state management, 
+		you can significantly reduce Terraform deployment latency in a multi-cloud environment.
+
+
 
 
 
