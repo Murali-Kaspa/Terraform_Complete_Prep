@@ -66,3 +66,33 @@ ami = "ami-0b7207e48d1b6c06f"
 tags = {Name = "Region_2_Instance"
 }
 }
+
+4. What is Data Resource in terraform ? 
+
+DataResource block in Terrafform is used to read information about the existing infrastrcuture,
+
+Either 1.Resources created outside Terraform (like manually created in AWS Console)
+       2.resources created by Terraform in another module
+
+Note: It’s read-only — you can’t change or manage the resource with a data block. You’re just fetching its details for use elsewhere.
+
+  provider "aws" {
+  region = "ap-south-1"
+  }
+
+  data "aws_instance" "Testing" {
+  instance_id = "i-0d13936c1bd76d83c"
+  }
+
+  output "instance_public_ip" {
+  value = data.aws_instance.Testing.public_ip
+  }
+
+  output "instance_private_ip" {
+  value = data.aws_instance.Testing.private_ip
+  }
+
+  output "instance_type" {
+  value = data.aws_instance.Testing.instance_type
+  }
+
