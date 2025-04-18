@@ -96,3 +96,32 @@ Note: It’s read-only — you can’t change or manage the resource with a data
   value = data.aws_instance.Testing.instance_type
   }
 
+5. How to select OS image automatically and create instances based on the images ? 
+
+      provider "aws"{
+      region = "ap-south-1"
+    }
+      data "aws_ami" "latest_amazon_linux" {
+      most_recent = true
+      owners      = ["amazon"]
+
+      filter {
+      name   = "name"
+      values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+      }
+
+      filter {
+      name   = "virtualization-type"
+      values = ["hvm"]
+     }
+    }
+
+    resource "aws_instance" "example" {
+    ami           = data.aws_ami.latest_amazon_linux.id
+    instance_type = "t2.micro"
+    tags = {
+    Name = "dynamic-ami-instance"
+  }
+}
+
+
