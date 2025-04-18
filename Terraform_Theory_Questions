@@ -232,6 +232,12 @@ Terraform
 		By increasing parallelism, reducing cross-cloud dependencies, optimizing provider configurations, and using efficient state management, 
 		you can significantly reduce Terraform deployment latency in a multi-cloud environment.
 
+21. How to Fetch Latest AMI dynamically without harcoding it on the code ?
+
+    If you want to dynamically fetch the latest AMI (Amazon Machine Image) every time you deploy your infrastructure using Terraform,
+    you use a data block to retrieve the AMI, and then refer to it in your aws_instance resource block.
+
+
 
 
 
