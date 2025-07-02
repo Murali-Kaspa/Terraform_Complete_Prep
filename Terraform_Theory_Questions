@@ -237,6 +237,92 @@ Terraform
     If you want to dynamically fetch the latest AMI (Amazon Machine Image) every time you deploy your infrastructure using Terraform,
     you use a data block to retrieve the AMI, and then refer to it in your aws_instance resource block.
 
+22. How to establish a Connection between AWS and Terraform ?
+
+    We can establish a secure connection between Terraform and AWS using the following methods,
+    based on Terraform’s credential priority order:
+
+	Terraform uses this order :
+		Environment Variables
+		Shared Credentials File (~/.aws/credentials)
+		EC2 IAM Role / ECS Task Role
+		Explicit credentials in the provider block (❌ Not recommended)
+
+	If environment variables are set, Terraform will automatically use them — no need to run aws configure.
+
+	1️.Environment Variables
+		You can store AWS credentials using the export command:
+
+		export AWS_ACCESS_KEY_ID="your-access-key"
+		export AWS_SECRET_ACCESS_KEY="your-secret-key"
+
+		To verify:
+		echo $AWS_ACCESS_KEY_ID
+		echo $AWS_SECRET_ACCESS_KEY
+
+	NOTE:
+	
+	These credentials are stored in RAM — so if the server is stopped or restarted, the variables are lost.
+	To make them persistent:
+	You can add them to your shell startup file (~/.bashrc, ~/.bash_profile, or ~/.zshrc):
+	
+	nano ~/.bashrc
+	
+	Add the following lines:
+
+	export AWS_ACCESS_KEY_ID="your-access-key"
+	export AWS_SECRET_ACCESS_KEY="your-secret-key"
+	
+	Then apply the changes immediately:
+	source ~/.bashrc
+	
+	source reloads the file in the current shell. Without it, the changes will only take effect in the next session.
+
+	2.Shared Credentials File (~/.aws/credentials) ((Best Practice for Development)
+	
+	You can configure your credentials using the AWS CLI:
+	aws configure
+	This command saves your credentials in the following path:
+	
+	~/.aws/credentials
+	
+	cat ~/.aws/credentials
+	
+	This is a preferred method for local development.
+
+	3. EC2 IAM Role / ECS Task Role (Best Practice for Production)
+	For production environments, use IAM roles to avoid managing access keys manually.
+	
+	Steps:
+	Go to IAM > Roles > Create Role
+	
+	Trusted entity: Choose AWS Service
+	
+	Use case: Select EC2
+	
+	Attach required permissions (e.g., AmazonEC2FullAccess)
+	
+	Name the role (e.g., TerraformEC2Role)
+	
+	Attach the role to your EC2 instance
+
+	Now Terraform running on that EC2 instance can automatically authenticate using this role — no need to provide credentials manually.
+	
+	4.Explicit Credentials in Provider Block (Not Recommended)
+	provider "aws" {
+	  region     = "ap-south-1"
+	  access_key = "AKIA..."
+	  secret_key = "wJalr..."
+	}
+	
+	This method is not secure and should be avoided, especially in shared or production environments.
+	
+	Summary: Best Practice Recommendations
+Environment	Recommended Method
+Local Development	aws configure or shell variables
+CI/CD (Jenkins, GitHub Actions)	Environment variables (stored securely in secrets)
+EC2 Instances (Prod)	IAM Role (best practice)
+ECS Containers	ECS Task Role
 
 
 
