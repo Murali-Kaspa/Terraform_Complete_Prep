@@ -1,0 +1,67 @@
+Q1 : How to create multiple ECR Repo's ?
+
+We can create it by using two ways 
+      1) We can write two resource blocks.
+      2) We can take the help of Locals and for_each.
+############
+Method:1
+############
+
+provider "aws" {
+  region = "ap-south-1"
+}
+
+resource "aws_ecr_repository" "nginx" {
+  name                 = "nginx-repo"
+  image_tag_mutability = "MUTABLE"
+
+  image_scan_configuration {
+    scan_on_push = true
+  }
+
+  tags = {
+    Name = "nginx-repo"
+    App  = "nginx"
+  }
+}
+
+resource "aws_ecr_repository" "httpd" {
+  name                 = "httpd-repo"
+  image_tag_mutability = "MUTABLE"
+
+  image_scan_configuration {
+    scan_on_push = true
+  }
+
+  tags = {
+    Name = "httpd-repo"
+    App  = "httpd"
+  }
+}
+
+
+#############
+Method:2 :
+#############
+provider "aws" {
+  region = "ap-south-1"
+}
+
+locals {
+  repo = ["nginx", "httpd"]
+}
+
+resource "aws_ecr_repository" "httpd" {
+  for_each = toset(local.repo) #This will convert the List to Set (Key value pairs)
+
+  name                 = "repo-${each.key}"
+  image_tag_mutability = "MUTABLE"
+
+  image_scan_configuration {
+    scan_on_push = true
+  }
+
+  tags = {
+    Name = "Repo-${each.key}"
+  }
+}
