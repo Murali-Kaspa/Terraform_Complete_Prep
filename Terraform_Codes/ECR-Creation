@@ -29,7 +29,7 @@ resource "aws_ecr_repository" "httpd" {
   name                 = "httpd-repo"
   image_tag_mutability = "MUTABLE"
 
-  image_scan_configuration {
+  image_scanning_configuration {
     scan_on_push = true
   }
 
