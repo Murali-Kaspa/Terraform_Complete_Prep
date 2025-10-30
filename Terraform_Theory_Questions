@@ -120,11 +120,20 @@ EX: In real time we can take the ref from root module and create a child module 
 
 A: As terraform is declarative language it don't have loops concept, so in terraform we can't repeat a peice of code, To overcome this we use meta-parameter called as COUNT.
 
-	resource "aws_instance" "example" {
-  	count         = 3  #It will create no of instances, based on the count number which we give. 
- 	 ami           = "ami-0b7207e48d1b6c06f"
-  	instance_type = "t2.micro"
-	}
+   variable "env" {
+   default = "prod"
+   }
+
+    resource "aws_instance" "example" {
+    ami           = "ami-01760eea5c574eb86"
+    instance_type = var.env == "prod" ? "t2.large" : "t2.micro"  #If Prod it selects t2.large else t2.micro
+  instance_type = var.env=="prod" ? "t2.large": var.env == "test" ? "t2.medium" : "t2.micro" #If Prod it selects t2.large, if test t2.medium else t2.micro.
+    tags = {
+    Name = var.env == "prod" ? "Production-Server" : "Development-Server"
+    
+  }
+}
+
    * The ternary operator is a shorthand for a simple if-else condition. It works like this: condition ? true_value : false_value
 	instance_type = var.environment == "production" ? "t2.large" : "t2.micro"
 
