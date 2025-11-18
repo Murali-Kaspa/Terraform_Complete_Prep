@@ -1,0 +1,45 @@
+pipeline {
+  agent {
+    label "${params.Environment}"
+  }
+  parameters {
+    choice(
+      name: 'Environment',
+      choices: ['DEV', 'Test', 'Prod'],
+      description: 'Please select your environment'
+    )
+    choice(
+      name: 'Command',
+      choices: ['init', 'fmt', 'validate', 'plan', 'apply', 'destroy'],
+      description: 'Please select your terraform command to run'
+    )
+  }
+  stages {
+    stage('Cleaning Workspace') {
+      steps {
+        cleanWs()
+      }
+    }
+    stage('Terraform Command') {
+      steps {
+        script {
+          if (params.Command == 'init') {
+            sh 'terraform init'
+          } else if (params.Command == 'fmt') {
+            sh 'terraform fmt'
+          } else if (params.Command == 'validate') {
+            sh 'terraform validate'
+          } else if (params.Command == 'plan') {
+            sh 'terraform plan'
+          } else if (params.Command == 'apply') {
+            sh 'terraform apply -auto-approve'
+          } else if (params.Command == 'destroy') {
+            sh 'terraform destroy -auto-approve'
+          } else {
+            error("Unsupported terraform command: ${params.Command}")
+          }
+        }
+      }
+    }
+  }
+}
