@@ -20,6 +20,13 @@ pipeline {
         cleanWs()
       }
     }
+    stage('Checkout Repo') {
+      steps {
+        git branch: 'main',
+            credentialsId: 'Git-Credentials',
+            url: 'https://github.com/Murali-Kaspa/Terraform_Complete_Prep.git'
+      }
+    }
     stage('Terraform Command') {
       steps {
         script {
