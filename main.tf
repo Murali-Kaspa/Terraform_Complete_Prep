@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "onebucket" {
-  bucket = "myuniquebucket18112025"
+  bucket = "myuniquebucket17112025"
 
   versioning {
     enabled = true
